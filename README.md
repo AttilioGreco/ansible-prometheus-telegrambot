@@ -15,7 +15,7 @@ The role defines most of its variables in `defaults/main.yml`:
 - Default value: **2.1** 
 
 ### `prometheus_telegram_bot_admin_token`
-- chat token you or username
+- chat token
 
 ### `prometheus_telegram_bot_telegram_token`
 - API token you get from `@BotFather`
