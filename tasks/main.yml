@@ -1,0 +1,94 @@
+#- name: donwload repo and checkout in release-"{{prometheus_bot_version}}"
+#  git:
+#    repo: 'https://github.com/metalmatze/alertmanager-bot.git'
+#    dest: "{{prometheus_gitrepo_url}}"
+#    version: "{{prometheus_bot_version}}"
+
+- name: create prometheus-telegram-bot group if not exist
+  group: name={{ prometheus_telegram_bot_user }}  state=present
+
+- name: create prometheus-telegram-user group if not exist
+  user:
+    name: "{{ prometheus_telegram_bot_user }}"
+    group: "{{ prometheus_telegram_bot_group }}"
+    createhome: no
+    shell: /sbin/nologin
+    comment: "Prometheus User"
+    state: present
+
+- name: Create Install Directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ prometheus_telegram_bot_user }}"
+    group: "{{ prometheus_telegram_bot_group }}"
+    mode: "u=rwx,g=rx,o="
+  with_items:
+    - "{{ prometheus_telegram_bot_install_path }}"
+    - "{{ prometheus_telegram_bot_config_path }}"
+    - "{{ prometheus_telegram_bot_log_path }}"
+    - "{{ prometheus_telegram_bot_pid_path }}"
+    - "{{ prometheus_telegram_bot_storage_path }}"
+
+- name: Configure Dir permission
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ prometheus_telegram_bot_user }}"
+    group: "{{ prometheus_telegram_bot_group }}"
+    mode: "u=rwx,g=rx,o="
+  with_items:
+    - "{{ prometheus_telegram_bot_install_path }}"
+    - "{{ prometheus_telegram_bot_config_path }}"
+    - "{{ prometheus_telegram_bot_log_path }}"
+    - "{{ prometheus_telegram_bot_pid_path }}"
+    - "{{ prometheus_telegram_bot_storage_path }}"
+  
+- name: download prometheus Prometheus Telegram binary
+  get_url:
+    url: "{{ prometheus_telegram_bot_gitrepo_url }}"
+    dest: "{{ prometheus_telegram_bot_install_path }}/prometheus_telegram_bot{{prometheus_telegram_bot_version}}"
+    validate_certs: false
+  register: prometheus_telegram_bot_updated
+  notify:
+    - restart prometheus-telegram-bot
+
+- name: update group and owner for file "prometheus_telegram_bot{{prometheus_telegram_bot_version}}" 
+  file:
+    path: "{{ prometheus_telegram_bot_install_path }}/prometheus_telegram_bot{{prometheus_telegram_bot_version}}"
+    owner: "{{ prometheus_telegram_bot_user }}"
+    group: "{{ prometheus_telegram_bot_group }}"
+    mode: "u=rwx,g=rx,o="
+
+- name: update group and owner for directory
+  file:
+    path: "{{ prometheus_telegram_bot_install_path }}"
+    state: directory
+    recurse: yes
+    owner: "{{ prometheus_telegram_bot_user }}"
+    group: "{{ prometheus_telegram_bot_group }}"
+  when: prometheus_telegram_bot_updated | changed
+
+- name: update group and owner for files
+  file:
+    path: "{{ prometheus_telegram_bot_install_path }}"
+    state: directory
+    recurse: yes
+    owner: "{{ prometheus_telegram_bot_user }}"
+    group: "{{ prometheus_telegram_bot_group }}"
+  when: prometheus_telegram_bot_updated | changed
+
+- name: deoploy systemd service 
+  template:
+    src: templates/prometheus-telegram-bot.service.j2
+    dest: /etc/systemd/system/prometheus-telegram-bot.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start and enable prometheus-telegram-bot service
+  systemd:
+    state: started
+    daemon_reload: yes
+    enabled: yes
+    name: prometheus-telegram-bot

@@ -1,0 +1,12 @@
+---
+# file: handlers/main.yml
+
+- name: restart prometheus-telegram-bot
+  service: name=prometheus-telegram-bot state=restarted
+
+- name: reload prometheus-telegram-bot
+  service: name=prometheus-telegram-bot state=reloaded
+
+- name: stop prometheus-telegram-bot
+  service: name=prometheus-telegram-bot state=stopped
+

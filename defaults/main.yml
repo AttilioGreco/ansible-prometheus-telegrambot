@@ -1,0 +1,25 @@
+---
+# variabili di servizio
+# variables needed to be defined in user's playbook
+# user-configurable defaults
+#prometheus_server: my-prometheus.mydomain.it
+
+prometheus_telegram_bot_user: prometheus
+prometheus_telegram_bot_group: prometheus
+prometheus_telegram_bot_config_path: /opt/prometheus
+prometheus_telegram_bot_log_path: /var/log/prometheus
+prometheus_telegram_bot_storage_path: /var/lib/prometheus_telegram_bot
+prometheus_telegram_bot_pid_path: /var/run/prometheus
+prometheus_download_path: /tmp
+prometheus_telegram_bot_version: 0.2.1
+prometheus_telegram_bot_install_path: /opt/prometheus
+prometheus_telegram_bot_gitrepo_url: "https://github.com/metalmatze/alertmanager-bot/releases/download/{{prometheus_telegram_bot_version}}/alertmanager-telegram-{{prometheus_telegram_bot_version}}-linux-amd64"
+prometheus_telegram_alertmanager_url: localhost
+prometheus_telegram_port: 9093
+prometheus_telegram_bot_url: localhost
+prometheus_telegram_bot_port: 9087
+prometheus_telegram_bot_admin_token: 1234567 # chat tocken --telegram.admin=96900939
+prometheus_telegram_bot_telegram_token: xxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+prometheus_telegram_bot_install_path: "{{ prometheus_telegram_bot_config_path}}/telegram_bot"
+

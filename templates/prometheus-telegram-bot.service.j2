@@ -1,0 +1,16 @@
+[Unit]
+Description=Prometheus Telegram Bot
+After=network.target
+
+[Service]
+# telegram bot ENV
+
+Type=simple
+User={{ prometheus_telegram_bot_user }}
+Groups={{prometheus_telegram_bot_group}}
+WorkingDirectory={{prometheus_telegram_bot_install_path}}
+ExecStart={{ prometheus_telegram_bot_install_path }}/prometheus_telegram_bot{{prometheus_telegram_bot_version}} --bolt.path={{prometheus_telegram_bot_storage_path}}/bot.db --alertmanager.url=http://{{prometheus_telegram_bot_url}}:{{prometheus_telegram_port}} --listen.addr=0.0.0.0:{{prometheus_telegram_bot_port}}  --store=bolt  --telegram.admin={{ prometheus_telegram_bot_admin_token }} --telegram.token={{ prometheus_telegram_bot_telegram_token }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
