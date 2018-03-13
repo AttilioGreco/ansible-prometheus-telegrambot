@@ -18,7 +18,7 @@ prometheus_telegram_alertmanager_url: localhost
 prometheus_telegram_port: 9093
 prometheus_telegram_bot_url: localhost
 prometheus_telegram_bot_port: 9087
-prometheus_telegram_bot_admin_token: 1234567 # chat tocken --telegram.admin=96900939
+prometheus_telegram_bot_admin_token: 1234567 # chat token --telegram.admin=96900939
 prometheus_telegram_bot_telegram_token: xxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 prometheus_telegram_bot_install_path: "{{ prometheus_telegram_bot_config_path}}/telegram_bot"
