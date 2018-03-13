@@ -11,7 +11,7 @@ This role requires Ansible 2.4 or higher.
 The role defines most of its variables in `defaults/main.yml`:
 
 ### `prometheus_bot_version`  
-- Version of the Prometheus service.  
+- Version of the Prometheus Bot Service.  
 - Default value: **2.1** 
 
 ### `prometheus_telegram_bot_admin_token`
