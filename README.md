@@ -18,7 +18,7 @@ The role defines most of its variables in `defaults/main.yml`:
 - chat token you or username
 
 ### `prometheus_telegram_bot_telegram_token`
-- API token you get from `@bot_fathr`
+- API token you get from `@BotFather`
 
 ## Example Playbook
 
